@@ -23,7 +23,10 @@ enum IntoColorError {
     IntConversion,
 }
 
-// I AM NOT DONE
+const RGB_MIN: i16 = 0;
+const RGB_MAX: i16 = 255;
+
+
 
 // Your task is to complete this implementation
 // and return an Ok result of inner type Color.
@@ -38,6 +41,26 @@ enum IntoColorError {
 impl TryFrom<(i16, i16, i16)> for Color {
     type Error = IntoColorError;
     fn try_from(tuple: (i16, i16, i16)) -> Result<Self, Self::Error> {
+        if tuple.0 < RGB_MIN
+            || tuple.0 > RGB_MAX
+            || tuple.1 < RGB_MIN
+            || tuple.1 > RGB_MAX
+            || tuple.2 < RGB_MIN
+            || tuple.2 > RGB_MAX
+        {
+            return Err(IntoColorError::IntConversion);
+        }
+        let red = u8::try_from(tuple.0);
+        let green = u8::try_from(tuple.1);
+        let blue = u8::try_from(tuple.2);
+        if red.is_err() || green.is_err() || blue.is_err() {
+            return Err(IntoColorError::IntConversion);
+        }
+        Ok(Color {
+            red: red.unwrap(),
+            green: green.unwrap(),
+            blue: blue.unwrap(),
+        })
     }
 }
 
@@ -45,6 +68,26 @@ impl TryFrom<(i16, i16, i16)> for Color {
 impl TryFrom<[i16; 3]> for Color {
     type Error = IntoColorError;
     fn try_from(arr: [i16; 3]) -> Result<Self, Self::Error> {
+        if arr[0] < RGB_MIN
+            || arr[0] > RGB_MAX
+            || arr[1] < RGB_MIN
+            || arr[1] > RGB_MAX
+            || arr[2] < RGB_MIN
+            || arr[2] > RGB_MAX
+        {
+            return Err(IntoColorError::IntConversion);
+        }
+        let red = u8::try_from(arr[0]);
+        let green = u8::try_from(arr[1]);
+        let blue = u8::try_from(arr[2]);
+        if red.is_err() || green.is_err() || blue.is_err() {
+            return Err(IntoColorError::IntConversion);
+        }
+        Ok(Color {
+            red: red.unwrap(),
+            green: green.unwrap(),
+            blue: blue.unwrap(),
+        })
     }
 }
 
@@ -52,6 +95,29 @@ impl TryFrom<[i16; 3]> for Color {
 impl TryFrom<&[i16]> for Color {
     type Error = IntoColorError;
     fn try_from(slice: &[i16]) -> Result<Self, Self::Error> {
+        if slice.len() != 3 {
+            return Err(IntoColorError::BadLen);
+        }
+        if slice[0] < RGB_MIN
+            || slice[0] > RGB_MAX
+            || slice[1] < RGB_MIN
+            || slice[1] > RGB_MAX
+            || slice[2] < RGB_MIN
+            || slice[2] > RGB_MAX
+        {
+            return Err(IntoColorError::IntConversion);
+        }
+        let red = u8::try_from(slice[0]);
+        let green = u8::try_from(slice[1]);
+        let blue = u8::try_from(slice[2]);
+        if red.is_err() || green.is_err() || blue.is_err() {
+            return Err(IntoColorError::IntConversion);
+        }
+        Ok(Color {
+            red: red.unwrap(),
+            green: green.unwrap(),
+            blue: blue.unwrap(),
+        })
     }
 }
 
